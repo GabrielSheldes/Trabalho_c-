@@ -73,29 +73,61 @@ namespace Trabalho_Jef
             AdicionarAoCarrinho(codigo, quantidade);
         }
 
+
+
         private void txtValorPago_TextChanged(object sender, EventArgs e)
         {
             CalcularTroco();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void btnAdicionarCarrinho_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                int codigo = int.Parse(txtCodigoProduto.Text);
+                int quantidade = int.Parse(txtQuantidade.Text);
+                AdicionarAoCarrinho(codigo, quantidade);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao adicionar produto: {ex.Message}");
+            }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void btnFinalizarVenda_Click(object sender, EventArgs e)
         {
+            decimal total = carrinho.Sum(x => x.Subtotal);
+            decimal pago = decimal.TryParse(txtValorPago.Text, out var valor) ? valor : 0;
+            decimal troco = pago - total;
 
+            string resumo = "Itens:\n";
+            foreach (var item in carrinho)
+            {
+                resumo += $"{item.Produto.Nome} x{item.Quantidade} - {item.Subtotal:C}\n";
+            }
+
+            resumo += $"\nTotal: {total:C}\nPago: {pago:C}\nTroco: {troco:C}";
+
+            MessageBox.Show(resumo, "Resumo da Venda");
+
+            // Limpa tudo para próxima venda
+            carrinho.Clear();
+            AtualizarCarrinho();
+            txtValorPago.Clear();
+            lblTroco.Text = "";
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void btnCancelar_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
+            carrinho.Clear();
+            AtualizarCarrinho();
+            txtCodigoProduto.Clear();
+            txtQuantidade.Clear();
+            txtValorPago.Clear();
+            lblTroco.Text = "";
+            lblTotal.Text = "R$ 0,00";
+        
         }
     }
 }
