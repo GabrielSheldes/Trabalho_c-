@@ -3,3 +3,8 @@ C:\Users\Tecnico\Desktop\Gabriel Sheldes\trabalho do jef\Trabalho_c-\Trabalho_Je
 C:\Users\Tecnico\Desktop\Gabriel Sheldes\trabalho do jef\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.Properties.Resources.resources
 C:\Users\Tecnico\Desktop\Gabriel Sheldes\trabalho do jef\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.csproj.GenerateResource.cache
 C:\Users\Tecnico\Desktop\Gabriel Sheldes\trabalho do jef\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.csproj.CoreCompileInputs.cache
+C:\Users\Tecnico\Desktop\Nova pasta\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.csproj.AssemblyReference.cache
+C:\Users\Tecnico\Desktop\Nova pasta\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.Form1.resources
+C:\Users\Tecnico\Desktop\Nova pasta\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.Properties.Resources.resources
+C:\Users\Tecnico\Desktop\Nova pasta\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.csproj.GenerateResource.cache
+C:\Users\Tecnico\Desktop\Nova pasta\Trabalho_c-\Trabalho_Jef\obj\Debug\Trabalho_Jef.csproj.CoreCompileInputs.cache

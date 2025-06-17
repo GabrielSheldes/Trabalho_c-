@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace Trabalho_Jef
 {
@@ -13,7 +15,7 @@ namespace Trabalho_Jef
             using (var conn = DbHelper.GetConnection())
             {
                 conn.Open();
-                var cmd = new SQLiteCommand("SELECT Codigo, Nome, Preco FROM Produtos WHERE Codigo = @Codigo", conn);
+                var cmd = new MySqlCommand("SELECT Codigo, Nome, Preco FROM Produtos WHERE Codigo = @Codigo", conn);
                 cmd.Parameters.AddWithValue("@Codigo", codigo);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -21,9 +23,9 @@ namespace Trabalho_Jef
                     {
                         return new Produto
                         {
-                            Codigo = reader.GetInt32(0),
-                            Nome = reader.GetString(1),
-                            Preco = reader.GetDecimal(2)
+                            Codigo = reader.GetInt32("Codigo"),
+                            Nome = reader.GetString("Nome"),
+                            Preco = reader.GetDecimal("Preco")
                         };
                     }
                 }

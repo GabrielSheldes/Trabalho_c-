@@ -50,40 +50,46 @@
             // Codigo
             // 
             this.Codigo.AutoSize = true;
-            this.Codigo.Location = new System.Drawing.Point(1, 33);
+            this.Codigo.Location = new System.Drawing.Point(2, 51);
+            this.Codigo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Codigo.Name = "Codigo";
-            this.Codigo.Size = new System.Drawing.Size(95, 13);
+            this.Codigo.Size = new System.Drawing.Size(141, 20);
             this.Codigo.TabIndex = 0;
             this.Codigo.Text = "Codigo do Produto";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 57);
+            this.label2.Location = new System.Drawing.Point(14, 88);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
+            this.label2.Size = new System.Drawing.Size(92, 20);
             this.label2.TabIndex = 1;
             this.label2.Text = "Quantidade";
             // 
             // textCodigoProduto
             // 
-            this.textCodigoProduto.Location = new System.Drawing.Point(110, 33);
+            this.textCodigoProduto.Location = new System.Drawing.Point(165, 51);
+            this.textCodigoProduto.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textCodigoProduto.Name = "textCodigoProduto";
-            this.textCodigoProduto.Size = new System.Drawing.Size(100, 20);
+            this.textCodigoProduto.Size = new System.Drawing.Size(148, 26);
             this.textCodigoProduto.TabIndex = 2;
+       
             // 
             // txt
             // 
-            this.txt.Location = new System.Drawing.Point(110, 57);
+            this.txt.Location = new System.Drawing.Point(165, 88);
+            this.txt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txt.Name = "txt";
-            this.txt.Size = new System.Drawing.Size(100, 20);
+            this.txt.Size = new System.Drawing.Size(148, 26);
             this.txt.TabIndex = 3;
             // 
             // btnAdicionarCarrinho
             // 
-            this.btnAdicionarCarrinho.Location = new System.Drawing.Point(91, 80);
+            this.btnAdicionarCarrinho.Location = new System.Drawing.Point(136, 123);
+            this.btnAdicionarCarrinho.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAdicionarCarrinho.Name = "btnAdicionarCarrinho";
-            this.btnAdicionarCarrinho.Size = new System.Drawing.Size(142, 23);
+            this.btnAdicionarCarrinho.Size = new System.Drawing.Size(213, 35);
             this.btnAdicionarCarrinho.TabIndex = 4;
             this.btnAdicionarCarrinho.Text = "Adicionar ao Carrinho";
             this.btnAdicionarCarrinho.UseVisualStyleBackColor = true;
@@ -98,10 +104,11 @@
             this.Quantidade,
             this.V,
             this.Subtotal});
-            this.dataGridView1.Location = new System.Drawing.Point(247, 27);
+            this.dataGridView1.Location = new System.Drawing.Point(370, 42);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 62;
-            this.dataGridView1.Size = new System.Drawing.Size(429, 165);
+            this.dataGridView1.Size = new System.Drawing.Size(644, 254);
             this.dataGridView1.TabIndex = 5;
             // 
             // Produto
@@ -135,47 +142,42 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(8, 168);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(12, 258);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.Size = new System.Drawing.Size(91, 20);
             this.label1.TabIndex = 6;
             this.label1.Text = "Valor Pago:";
             // 
             // Total
             // 
             this.Total.AutoSize = true;
-            this.Total.Location = new System.Drawing.Point(9, 137);
-            this.Total.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.Total.Location = new System.Drawing.Point(14, 211);
             this.Total.Name = "Total";
-            this.Total.Size = new System.Drawing.Size(34, 13);
+            this.Total.Size = new System.Drawing.Size(48, 20);
             this.Total.TabIndex = 7;
             this.Total.Text = "Total:";
             // 
             // txtValorPago
             // 
-            this.txtValorPago.Location = new System.Drawing.Point(84, 166);
-            this.txtValorPago.Margin = new System.Windows.Forms.Padding(2);
+            this.txtValorPago.Location = new System.Drawing.Point(126, 255);
             this.txtValorPago.Name = "txtValorPago";
-            this.txtValorPago.Size = new System.Drawing.Size(63, 20);
+            this.txtValorPago.Size = new System.Drawing.Size(92, 26);
             this.txtValorPago.TabIndex = 8;
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(50, 15);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 9;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // btnFinalizarVenda
             // 
-            this.btnFinalizarVenda.Location = new System.Drawing.Point(11, 222);
-            this.btnFinalizarVenda.Margin = new System.Windows.Forms.Padding(2);
+            this.btnFinalizarVenda.Location = new System.Drawing.Point(16, 342);
             this.btnFinalizarVenda.Name = "btnFinalizarVenda";
-            this.btnFinalizarVenda.Size = new System.Drawing.Size(103, 29);
+            this.btnFinalizarVenda.Size = new System.Drawing.Size(154, 45);
             this.btnFinalizarVenda.TabIndex = 10;
             this.btnFinalizarVenda.Text = "Finalizar Venda ";
             this.btnFinalizarVenda.UseVisualStyleBackColor = true;
@@ -183,10 +185,9 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(144, 222);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCancelar.Location = new System.Drawing.Point(216, 342);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(103, 29);
+            this.btnCancelar.Size = new System.Drawing.Size(154, 45);
             this.btnCancelar.TabIndex = 11;
             this.btnCancelar.Text = "Cancelar Venda ";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -194,9 +195,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(701, 365);
+            this.ClientSize = new System.Drawing.Size(1052, 562);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnFinalizarVenda);
             this.Controls.Add(this.button1);
@@ -209,7 +210,6 @@
             this.Controls.Add(this.textCodigoProduto);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Codigo);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
