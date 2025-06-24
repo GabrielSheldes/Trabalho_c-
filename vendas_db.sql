@@ -33,6 +33,6 @@ FOREIGN KEY (venda_id) REFERENCES vendas(id)
 );
                         
 INSERT INTO produtos (codigo, nome, preco) VALUES 
-(1, 'Produto A', 10.50),
-(2, 'Produto B', 25.00),
-(3, 'Produto C', 7.80);
+(1, 'ovo', 10.50),
+(2, 'cafe', 25.00),
+(3, 'leite', 7.80);

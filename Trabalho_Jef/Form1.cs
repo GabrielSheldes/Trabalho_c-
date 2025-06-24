@@ -1,133 +1,126 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Trabalho_Jef.Carrinho;
 
 namespace Trabalho_Jef
 {
     public partial class Form1 : Form
     {
-        private List<ItemCarrinho> carrinho = new List<ItemCarrinho>();
-        private Produto produtoService = new Produto();
+        private Carrinho _carrinho = new Carrinho();
+        private ProdutoService _produtoService;
 
         public Form1()
         {
             InitializeComponent();
-            AtualizarCarrinho();
+            _produtoService = new ProdutoService();
         }
 
-        private void AdicionarAoCarrinho(int codigoProduto, int quantidade)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            var produto = produtoService.BuscarPorCodigo(codigoProduto);
-            if (produto == null)
-            {
-                MessageBox.Show("Produto não encontrado.");
-                return;
-            }
-
-            var existente = carrinho.FirstOrDefault(x => x.Produto.Codigo == codigoProduto);
-            if (existente != null)
-            {
-                existente.Quantidade += quantidade;
-            }
-            else
-            {
-                carrinho.Add(new ItemCarrinho { Produto = produto, Quantidade = quantidade });
-            }
-
-            AtualizarCarrinho();
-        }
-
-        private void AtualizarCarrinho()
-        {
-            dgvCarrinho.Rows.Clear();
-            decimal total = 0;
-
-            foreach (var item in carrinho)
-            {
-                dgvCarrinho.Rows.Add(item.Produto.Nome, item.Quantidade, item.Produto.Preco.ToString("C"), item.Subtotal.ToString("C"));
-                total += item.Subtotal;
-            }
-
-            lblTotal.Text = total.ToString("C");
-        }
-
-        private void CalcularTroco()
-        {
-            decimal total = carrinho.Sum(x => x.Subtotal);
-            decimal pago = decimal.TryParse(txtValorPago.Text, out var valor) ? valor : 0;
-            decimal troco = pago - total;
-            lblTroco.Text = troco >= 0 ? troco.ToString("C") : "Valor insuficiente";
-        }
-
-        private void btnAdicionar_Click(object sender, EventArgs e)
-        {
-            int codigo = int.Parse(txtCodigoProduto.Text);
-            int quantidade = int.Parse(txtQuantidade.Text);
-            AdicionarAoCarrinho(codigo, quantidade);
-        }
-
-
-
-        private void txtValorPago_TextChanged(object sender, EventArgs e)
-        {
-            CalcularTroco();
+            AtualizarTotal();
         }
 
         private void btnAdicionarCarrinho_Click(object sender, EventArgs e)
         {
             try
             {
-                int codigo = int.Parse(txtCodigoProduto.Text);
-                int quantidade = int.Parse(txtQuantidade.Text);
-                AdicionarAoCarrinho(codigo, quantidade);
+                if (!int.TryParse(textCodigoProduto.Text, out int codigo))
+                {
+                    MessageBox.Show("Código inválido");
+                    return;
+                }
+
+                if (!int.TryParse(txt.Text, out int quantidade) || quantidade <= 0)
+                {
+                    MessageBox.Show("Quantidade inválida");
+                    return;
+                }
+
+                var produto = _produtoService.BuscarPorCodigo(codigo);
+                if (produto == null)
+                {
+                    MessageBox.Show("Produto não encontrado");
+                    return;
+                }
+
+                _carrinho.AdicionarItem(produto, quantidade);
+                AtualizarCarrinhoGrid();
+                AtualizarTotal();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao adicionar produto: {ex.Message}");
+                MessageBox.Show($"Erro: {ex.Message}");
             }
+        }
+
+        private void AtualizarCarrinhoGrid()
+        {
+            dataGridView1.Rows.Clear();
+            foreach (var item in _carrinho.Itens)
+            {
+                dataGridView1.Rows.Add(
+                    item.Produto.Nome,
+                    item.Quantidade,
+                    item.Produto.Preco.ToString("C2"),
+                    item.Subtotal.ToString("C2")
+                );
+            }
+        }
+
+        private void AtualizarTotal()
+        {
+            Total.Text = _carrinho.Total.ToString("C2");
         }
 
         private void btnFinalizarVenda_Click(object sender, EventArgs e)
         {
-            decimal total = carrinho.Sum(x => x.Subtotal);
-            decimal pago = decimal.TryParse(txtValorPago.Text, out var valor) ? valor : 0;
-            decimal troco = pago - total;
-
-            string resumo = "Itens:\n";
-            foreach (var item in carrinho)
+            try
             {
-                resumo += $"{item.Produto.Nome} x{item.Quantidade} - {item.Subtotal:C}\n";
+                if (!decimal.TryParse(txtValorPago.Text, out decimal valorPago))
+                {
+                    MessageBox.Show("Valor pago inválido");
+                    return;
+                }
+
+                var venda = new Venda
+                {
+                    Data = DateTime.Now,
+                    Itens = new List<Carrinho.ItemCarrinho>(_carrinho.Itens),
+                    Total = _carrinho.Total,
+                    ValorPago = valorPago,
+                    Troco = valorPago - _carrinho.Total
+                };
+
+                if (venda.Troco < 0)
+                {
+                    MessageBox.Show("Valor pago é insuficiente");
+                    return;
+                }
+
+                using (var vendaService = new VendaService())
+                {
+                    vendaService.Salvar(venda);
+                }
+
+                MessageBox.Show($"Venda finalizada! Troco: {venda.Troco:C2}");
+                _carrinho.Limpar();
+                AtualizarCarrinhoGrid();
+                AtualizarTotal();
             }
-
-            resumo += $"\nTotal: {total:C}\nPago: {pago:C}\nTroco: {troco:C}";
-
-            MessageBox.Show(resumo, "Resumo da Venda");
-
-            // Limpa tudo para próxima venda
-            carrinho.Clear();
-            AtualizarCarrinho();
-            txtValorPago.Clear();
-            lblTroco.Text = "";
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao finalizar venda: {ex.Message}");
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-
-            carrinho.Clear();
-            AtualizarCarrinho();
-            txtCodigoProduto.Clear();
-            txtQuantidade.Clear();
+            _carrinho.Limpar();
+            AtualizarCarrinhoGrid();
+            AtualizarTotal();
+            textCodigoProduto.Clear();
+            txt.Clear();
             txtValorPago.Clear();
-            lblTroco.Text = "";
-            lblTotal.Text = "R$ 0,00";
-        
         }
     }
 }

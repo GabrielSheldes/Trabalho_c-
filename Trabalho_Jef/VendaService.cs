@@ -1,53 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
 namespace Trabalho_Jef
 {
-    internal class VendaService
+    public class VendaService : IDisposable
     {
-        public void SalvarVenda(Venda venda)
+        private readonly MySqlConnection _connection;
+
+        public VendaService()
         {
-            using (var conn = DbHelper.GetConnection())
+            _connection = DbHelper.GetConnection();
+        }
+
+        public void Salvar(Venda venda)
+        {
+            using (var transaction = _connection.BeginTransaction())
             {
-                conn.Open();
-                using (var transaction = conn.BeginTransaction())
+                try
                 {
-                    try
+                    // Inserir venda
+                    var cmdVenda = new MySqlCommand(
+                        @"INSERT INTO vendas (data, total, valor_pago, troco) 
+                          VALUES (@Data, @Total, @ValorPago, @Troco);
+                          SELECT LAST_INSERT_ID();", _connection);
+
+                    cmdVenda.Parameters.AddWithValue("@Data", venda.Data);
+                    cmdVenda.Parameters.AddWithValue("@Total", venda.Total);
+                    cmdVenda.Parameters.AddWithValue("@ValorPago", venda.ValorPago);
+                    cmdVenda.Parameters.AddWithValue("@Troco", venda.Troco);
+
+                    var vendaId = Convert.ToInt32(cmdVenda.ExecuteScalar());
+
+                    // Inserir itens da venda
+                    foreach (var item in venda.Itens)
                     {
-                        // Salvar a venda principal
-                        var cmdVenda = new MySqlCommand("INSERT INTO Vendas (Data, Total, ValorPago, Troco) VALUES (@Data, @Total, @ValorPago, @Troco); SELECT LAST_INSERT_ID();", conn, transaction);
-                        cmdVenda.Parameters.AddWithValue("@Data", venda.Data);
-                        cmdVenda.Parameters.AddWithValue("@Total", venda.Total);
-                        cmdVenda.Parameters.AddWithValue("@ValorPago", venda.ValorPago);
-                        cmdVenda.Parameters.AddWithValue("@Troco", venda.Troco);
+                        var cmdItem = new MySqlCommand(
+                            @"INSERT INTO itens_venda 
+                              (venda_id, produto_codigo, quantidade, preco_unitario) 
+                              VALUES (@VendaId, @ProdutoCodigo, @Quantidade, @PrecoUnitario)", _connection);
 
-                        venda.Id = Convert.ToInt32(cmdVenda.ExecuteScalar());
+                        cmdItem.Parameters.AddWithValue("@VendaId", vendaId);
+                        cmdItem.Parameters.AddWithValue("@ProdutoCodigo", item.Produto.Codigo);
+                        cmdItem.Parameters.AddWithValue("@Quantidade", item.Quantidade);
+                        cmdItem.Parameters.AddWithValue("@PrecoUnitario", item.Produto.Preco);
 
-                        // Salvar itens da venda
-                        foreach (var item in venda.Itens)
-                        {
-                            var cmdItem = new MySqlCommand("INSERT INTO ItensVenda (VendaId, ProdutoId, Quantidade, Subtotal) VALUES (@VendaId, @ProdutoId, @Quantidade, @Subtotal)", conn, transaction);
-                            cmdItem.Parameters.AddWithValue("@VendaId", venda.Id);
-                            cmdItem.Parameters.AddWithValue("@ProdutoId", item.Produto.Codigo);
-                            cmdItem.Parameters.AddWithValue("@Quantidade", item.Quantidade);
-                            cmdItem.Parameters.AddWithValue("@Subtotal", item.Subtotal);
-                            cmdItem.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
+                        cmdItem.ExecuteNonQuery();
                     }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        throw new Exception("Erro ao salvar venda: " + ex.Message);
-                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Erro ao salvar venda: " + ex.Message);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            _connection?.Close();
+            _connection?.Dispose();
         }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Trabalho_Jef
 {
-    internal class Produto
+    public class Produto
     {
         public int Codigo { get; set; }
         public string Nome { get; set; }
-        public decimal Preco { get; set; }
-        
+        private decimal _preco;
+
+        public decimal Preco
+        {
+            get => _preco;
+            set => _preco = value >= 0 ? value : throw new ArgumentException("Preço não pode ser negativo");
+        }
     }
 }
